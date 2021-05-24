@@ -4,26 +4,32 @@ using UnityEngine;
 
 public class columnas : MonoBehaviour
 {
-    float speed;
-
-    // Start is called before the first frame update
+    float mcQueen;
+    EOvariables eOvariables;
+    float rotateZ;
     void Start()
     {
-        speed = 10f;
+        eOvariables = GameObject.Find("EOvariables").GetComponent<EOvariables>();
+
+        rotateZ = Random.Range(0f, 360f);
+        transform.Rotate(0f, 0f, rotateZ);
+
         StartCoroutine("ColumnDestroyer");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.back * Time.deltaTime * speed);
+        mcQueen = eOvariables.mcQueen;
+
+        transform.Translate(Vector3.back * Time.deltaTime * mcQueen);
+
     }
 
     IEnumerator ColumnDestroyer()
     {
-        for (; ; )
+        for (; ; ) //es un bucle infinito
         {
-            float actPos = transform.position.z;
+            float actPos = transform.position.z; //actPos es posicion actual
             if (actPos <= -10)
             {
                 Destroy(gameObject);
@@ -34,5 +40,8 @@ public class columnas : MonoBehaviour
 
 
     }
+
+    
+    
 }
 
