@@ -9,18 +9,22 @@ public class EOvariables : MonoBehaviour
 
     [SerializeField] Text distance;
     [SerializeField] Text tiempo;
+    [SerializeField] Text nivel;
     float intervalo;
     float dist;
     float segundos;
+    float levelRise;
+    float level;
 
     void Start()
     {
-        mcQueen = 10f;
 
         intervalo = 0.1f;
         dist = 0f;
         segundos = 0f;
-        
+        level = 1;
+
+        StartCoroutine("speedIncrease");
     }
 
     void Update()
@@ -33,14 +37,24 @@ public class EOvariables : MonoBehaviour
         intervalo -= Time.deltaTime;
         if (intervalo <= 0)
         {
-            intervalo = 0.1f;
-            segundos = segundos + 0.1f;
+            intervalo = 1;
+            segundos = segundos + 1;
         }
 
 
         dist = segundos * mcQueen;
-        distance.text = dist + " mts";
-        tiempo.text = "segundos " + segundos;
+        distance.text = "Distance: " + dist + " mts";
+        tiempo.text = "Time: " + segundos;
     }
 
+    IEnumerator speedIncrease()
+    {
+        for (; ; )
+        {
+            nivel.text = level.ToString();
+            yield return new WaitForSeconds(10f);
+            level = level + 1;
+            mcQueen = level * 10f;
+        }
+    }
 }
