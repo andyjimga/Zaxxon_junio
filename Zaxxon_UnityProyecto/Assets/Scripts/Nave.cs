@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Nave : MonoBehaviour
 {
-
     private Vector3 posIni;
     [SerializeField] Vector3 posDest = new Vector3(0, 1, 0);
     private Vector3 finPos;
-
     float posX;
     float posY;
-
     float mcQueen;
-    EOvariables eOvariables;
 
-    Renderer renderer;
+    EOvariables eOvariables;
+    new Renderer renderer;
+    public bool alive = true;
+
+
 
     void Start()
     {
         posIni = new Vector3(0, 0, 0);
         transform.position = posIni;
-
         eOvariables = GameObject.Find("EOvariables").GetComponent<EOvariables>();
         renderer = GetComponent<Renderer>();
     }
@@ -29,8 +28,8 @@ public class Nave : MonoBehaviour
     void Update()
     {
         MovNave();
-
         mcQueen = eOvariables.mcQueen;
+
     }
 
 
@@ -38,9 +37,7 @@ public class Nave : MonoBehaviour
     {
         posX = transform.position.x;
         posY = transform.position.y;
-
         float desplY = Input.GetAxis("Vertical");
-        
         float desplX = Input.GetAxis("Horizontal");
         
         if((posX >= -4.5 || desplX > 0) && (posX <= 4.5 || desplX < 0))
@@ -61,9 +58,8 @@ public class Nave : MonoBehaviour
         if (other.gameObject.tag == "Obstaculo")
         {
             renderer.enabled = false;
-            //Destroy(this.gameObject);
+            alive = false;
             eOvariables.mcQueen = 0;
-
         }
     }
 }

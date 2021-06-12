@@ -6,9 +6,7 @@ using UnityEngine.UI;
 public class EOvariables : MonoBehaviour
 {
     public float mcQueen;
-
     [SerializeField] Text distance;
-    [SerializeField] Text tiempo;
     [SerializeField] Text nivel;
     float intervalo;
     float dist;
@@ -16,22 +14,32 @@ public class EOvariables : MonoBehaviour
     float levelRise;
     float level;
 
+    public bool alive2;
+    Nave nave;
+
     void Start()
     {
 
         intervalo = 0.1f;
-        dist = 0f;
+        dist = 1;
         segundos = 0f;
         level = 1;
+        mcQueen = 10f;
 
-        StartCoroutine("speedIncrease");
+        nave = GameObject.Find("NaveBola").GetComponent<Nave>();
+
+        alive2 = nave.alive;
+        StartCoroutine("levelIncrease");
+        StartCoroutine("velocity");
     }
 
     void Update()
     {
         contador();
+        viva();
+        alive2 = nave.alive;
     }
-    
+
     void contador()
     {
         intervalo -= Time.deltaTime;
@@ -41,20 +49,37 @@ public class EOvariables : MonoBehaviour
             segundos = segundos + 1;
         }
 
+    } 
 
-        dist = segundos * mcQueen;
-        distance.text = "Distance: " + dist + " mts";
-        tiempo.text = "Time: " + segundos;
+    void viva()
+    {
+        if (mcQueen > 0)
+        {
+            dist = segundos * mcQueen;
+            distance.text = "Distance: " + dist + " mts";
+        }
+
+        
     }
 
-    IEnumerator speedIncrease()
+    IEnumerator levelIncrease()
     {
-        for (; ; )
-        {
-            nivel.text = level.ToString();
+        while (alive2) // es lo mismo que (alive2 == true)
+        { 
+            nivel.text = "Level " + level;
             yield return new WaitForSeconds(10f);
-            level = level + 1;
-            mcQueen = level * 10f;
+            level ++;
+        }
+    }
+    IEnumerator velocity()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(10f);
+            if (alive2) //hacerlo bien con un metodo que interrumpa corrutinas
+            {
+                mcQueen = mcQueen + 10;
+            }
         }
     }
 }
